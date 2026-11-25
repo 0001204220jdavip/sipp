@@ -38,7 +38,7 @@
             box-shadow: 0 3px 18px rgba(0,0,0,.09);
         }
 
-        h1, h2 { color: #147eac; }
+        h1, h2 { color: #f2d400; }
         h1 { margin: 0 0 8px; font-size: 25px; }
         h2 { margin: 0 0 18px; font-size: 21px; }
         .introducao { margin: 0 0 24px; color: #60666b; line-height: 1.5; }
@@ -77,7 +77,7 @@
             padding: 12px 16px;
             border: 0;
             border-radius: 6px;
-            background: #1688b9;
+            background: #f2d400;
             color: #fff;
             font-size: 14px;
             font-weight: bold;
@@ -86,7 +86,7 @@
         button:hover { background: #0d6f99; }
         button.amarelo { background: #f0d500; color: #333; }
         button.amarelo:hover { background: #dfc700; }
-        button.cinza { background: #59636a; }
+        button.cinza { background: #21db00; }
         button.cinza:hover { background: #414a50; }
         button.vermelho { background: #a83a3a; }
         button.vermelho:hover { background: #842d2d; }
@@ -166,9 +166,6 @@
         <h1>Cadastrar Novo Rolo Industrial</h1>
         <p class="introducao">Preencha as informações do produto para criar uma identificação. O QR Code levará os dados junto com ele, permitindo a consulta em outro aparelho.</p>
 
-        <div class="aviso">
-            <strong>Como funciona:</strong> os cadastros também ficam salvos neste navegador. Para abrir a ficha completa ao escanear o QR Code em outro celular ou computador, o site precisa estar publicado em um endereço da internet. Não é necessário banco de dados nem servidor próprio.
-        </div>
 
         <form id="cadastroForm">
             <div class="form-grid">
@@ -244,16 +241,16 @@
             <div id="listaRolos"></div>
         </section>
 
-        <p class="rodape">Mill Roll | Os cadastros locais são guardados neste navegador. A ficha do QR Code contém os dados no momento em que foi gerada.</p>
+    
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
     <script src="catalogo.js"></script>
     <script>
-        // Endereco usado para abrir a pagina de consulta em outro aparelho.
-        // Quando o site estiver publicado, o endereco e identificado automaticamente.
-        // Se quiser definir manualmente, coloque aqui o endereco da pasta do projeto.
+
+
+
         const ENDERECO_PUBLICO_DO_SITE = '';
 
         const CHAVE_DADOS = 'sipp_mill_roll_cadastros';
@@ -261,18 +258,18 @@
         const formulario = document.getElementById('cadastroForm');
         const mensagem = document.getElementById('mensagem');
 
-        // Busca os cadastros que estao guardados neste navegador.
+
         function obterRolos() {
             const dados = localStorage.getItem(CHAVE_DADOS);
             return dados ? JSON.parse(dados) : [];
         }
 
-        // Guarda a lista de cadastros no navegador.
+
         function salvarRolos(rolos) {
             localStorage.setItem(CHAVE_DADOS, JSON.stringify(rolos));
         }
 
-        // Coloca os produtos do catalogo como sugestoes no formulario.
+
         function carregarCatalogo() {
             const lista = document.getElementById('lista-produtos');
             catalogoMillRoll.forEach(function (item) {
@@ -282,7 +279,7 @@
             });
         }
 
-        // Ao escolher um produto, preenche o servico sugerido se o campo estiver vazio.
+
         document.getElementById('tipo_produto').addEventListener('change', function () {
             const tipo = document.getElementById('tipo_produto').value;
             const item = catalogoMillRoll.find(function (produto) {
@@ -293,7 +290,7 @@
             }
         });
 
-        // Monta o endereco da pagina de consulta, levando os dados dentro do QR Code.
+
         function montarLinkConsulta(rolo) {
             let paginaConsulta = '';
 
@@ -329,7 +326,7 @@
             return paginaConsulta + '#dados=' + dados;
         }
 
-        // Faz o QR Code. No site publicado, ele abre a ficha formatada em outro aparelho.
+
         function gerarEtiqueta(rolo) {
             const area = document.getElementById('areaEtiqueta');
             const quadro = document.getElementById('qrcode');
@@ -355,8 +352,7 @@
                     colorLight: '#ffffff',
                     correctLevel: QRCode.CorrectLevel.M
                 });
-                document.getElementById('avisoQr').textContent =
-                    'Escaneie este codigo para abrir a ficha do produto. Os dados estao dentro do QR Code; nao e necessario acessar o cadastro salvo no navegador que criou a etiqueta.';
+    
             } else {
                 new QRCode(quadro, {
                     text: montarTextoSimples(rolo),
@@ -373,7 +369,7 @@
             area.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // Texto de apoio para o QR Code usado enquanto o projeto ainda esta no computador.
+
         function montarTextoSimples(rolo) {
             return [
                 'MILL ROLL - SIPP',
@@ -388,7 +384,7 @@
             ].join('\n');
         }
 
-        // Recebe os dados do formulario e cria um novo cadastro.
+
         formulario.addEventListener('submit', function (evento) {
             evento.preventDefault();
 
@@ -429,7 +425,7 @@
             gerarEtiqueta(novoRolo);
         });
 
-        // Mostra a lista de rolos que foram cadastrados neste navegador.
+
         function mostrarRolos() {
             const lista = document.getElementById('listaRolos');
             const rolos = obterRolos();
@@ -466,7 +462,7 @@
             });
         }
 
-        // Exibe as informacoes de um rolo selecionado na lista local.
+
         function mostrarDetalhes(id) {
             const rolo = obterRolos().find(function (item) { return Number(item.id) === Number(id); });
             if (!rolo) return;
@@ -501,7 +497,7 @@
             document.getElementById('detalhes').style.display = 'block';
         }
 
-        // Salva a nova situacao e localizacao e prepara outra etiqueta.
+
         function atualizarRolo() {
             if (roloSelecionado === null) return;
 
@@ -522,7 +518,7 @@
             gerarEtiqueta(rolos[indice]);
         }
 
-        // Monta uma planilha Excel formatada com os cadastros deste navegador.
+
         async function exportarDados() {
             const rolos = obterRolos();
             if (rolos.length === 0) {
@@ -530,7 +526,7 @@
                 return;
             }
 
-            // A biblioteca ExcelJS e carregada pela internet para criar o arquivo .xlsx.
+
             if (typeof ExcelJS === 'undefined') {
                 alert('Nao foi possivel carregar o recurso de Excel. Verifique a conexao com a internet e tente novamente.');
                 return;
@@ -546,7 +542,7 @@
                 views: [{ state: 'frozen', ySplit: 5 }]
             });
 
-            // Largura das colunas para facilitar a leitura no Excel.
+
             planilha.columns = [
                 { key: 'id', width: 9 },
                 { key: 'codigo_patrimonio', width: 21 },
@@ -560,7 +556,7 @@
                 { key: 'data_atualizacao', width: 22 }
             ];
 
-            // Titulo e informacoes do relatorio.
+
             planilha.mergeCells('A1:J1');
             planilha.getCell('A1').value = 'MILL ROLL | RELATORIO DE PRODUTOS CADASTRADOS';
             planilha.getCell('A1').font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
@@ -609,7 +605,7 @@
                 };
             });
 
-            // Cada produto ocupa uma linha. Codigos e pedidos ficam como texto.
+
             rolos.forEach(function (rolo, indice) {
                 const linha = planilha.addRow([
                     rolo.id,
@@ -639,7 +635,7 @@
                 linha.getCell(5).numFmt = '@';
             });
 
-            // Filtros no cabecalho e configuracao para impressao.
+
             planilha.autoFilter = { from: 'A5', to: 'J' + (5 + rolos.length) };
             planilha.pageSetup.orientation = 'landscape';
             planilha.pageSetup.fitToPage = true;
@@ -667,7 +663,7 @@
             }
         }
 
-        // Apaga os cadastros deste navegador depois de confirmar.
+
         function apagarTodos() {
             if (!confirm('Deseja apagar todos os cadastros deste navegador?')) return;
             localStorage.removeItem(CHAVE_DADOS);
